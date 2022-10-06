@@ -22,6 +22,31 @@ namespace Kite.Console
         }
         public static DataTable AddIntraDayReportToTable(List<Candles> reports, DataTable dt)
         {
+            List<String> columns = new List<string>();
+            int columnIndex = 0;
+            foreach (System.Data.DataColumn column in dt.Columns)
+            {
+                if (column.ColumnName == "IsLowerTailLarger")
+                    continue;
+
+                columns.Add(column.ColumnName);
+                columnIndex++;
+            }
+
+            int rowIndex = 1;
+            foreach (DataRow dsrow in dt.Rows)
+            {
+                int cellIndex = 0;
+                foreach (string col in columns)
+                {
+                    if (cellIndex == 0)
+                    {
+
+                    }
+                    cellIndex++;
+                }
+                rowIndex++;
+            }
             return dt;
         }
 
