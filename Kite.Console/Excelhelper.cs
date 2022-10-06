@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kite.Console;
 using Newtonsoft.Json;
 using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
@@ -33,8 +34,7 @@ namespace Zerodha.Excel
 
         static string ReadJson()
         {
-            string path = @"C:\\Users\\Pawan\\source\\repos\\Kite.Console\\Kite.Console\\input\\M.json";
-            return File.ReadAllText(path);
+            return File.ReadAllText(Constant.PATH.ExcelPath);
         }
 
         static void CreateExcel(DataTable table)
@@ -45,49 +45,6 @@ namespace Zerodha.Excel
                 ISheet excelSheet = workbook.CreateSheet("Sheet1");
                 excelSheet.CreateFreezePane(0, 1);
                 int rowCount = table.Rows.Count;
-                //Show high Volume activity
-                XSSFSheetConditionalFormatting condFormating = (XSSFSheetConditionalFormatting)excelSheet.SheetConditionalFormatting;
-                XSSFConditionalFormattingRule cfVolRed =
-                    (XSSFConditionalFormattingRule)condFormating.CreateConditionalFormattingRule(ComparisonOperator.GreaterThanOrEqual, VolThreshold);
-
-                XSSFPatternFormatting fillRed = (XSSFPatternFormatting)cfVolRed.CreatePatternFormatting();
-                fillRed.FillBackgroundColor = IndexedColors.Red.Index;
-                fillRed.FillPattern = FillPattern.SolidForeground;
-                CellRangeAddress[] cfRangeVol = { CellRangeAddress.ValueOf($"F2:F{rowCount}") };
-                condFormating.AddConditionalFormatting(cfRangeVol, cfVolRed);
-
-                //Show Volatility
-                XSSFConditionalFormattingRule cfVolatilityYellow =
-                    (XSSFConditionalFormattingRule)condFormating.CreateConditionalFormattingRule(ComparisonOperator.GreaterThanOrEqual, lowToHightThresholdCent);
-                XSSFPatternFormatting fillyellow = (XSSFPatternFormatting)cfVolatilityYellow.CreatePatternFormatting();
-                fillyellow.FillBackgroundColor = IndexedColors.LightOrange.Index;
-                fillyellow.FillPattern = FillPattern.SolidForeground;
-                CellRangeAddress[] cfRangelowToHighInCent = { CellRangeAddress.ValueOf($"M2:M{rowCount}") };
-                condFormating.AddConditionalFormatting(cfRangelowToHighInCent, cfVolatilityYellow);
-
-                XSSFConditionalFormattingRule cfVolatilitylight =
-                    (XSSFConditionalFormattingRule)condFormating.CreateConditionalFormattingRule(ComparisonOperator.GreaterThanOrEqual, lowToHightThreshold);
-                XSSFPatternFormatting fill_light = (XSSFPatternFormatting)cfVolatilitylight.CreatePatternFormatting();
-                fill_light.FillBackgroundColor = IndexedColors.Aqua.Index;
-                fill_light.FillPattern = FillPattern.SolidForeground;
-                CellRangeAddress[] cfRangelightlowToHighInCent = { CellRangeAddress.ValueOf($"G2:G{rowCount}") };
-                condFormating.AddConditionalFormatting(cfRangelightlowToHighInCent, cfVolatilitylight);
-
-                // show Gap
-                XSSFConditionalFormattingRule cfGapPositive =
-                    (XSSFConditionalFormattingRule)condFormating.CreateConditionalFormattingRule(ComparisonOperator.GreaterThanOrEqual, "4");
-                XSSFPatternFormatting fill_gap = (XSSFPatternFormatting)cfGapPositive.CreatePatternFormatting();
-                short colorGap = IndexedColors.LightTurquoise.Index;
-                fill_gap.FillBackgroundColor = colorGap;
-                fill_gap.FillPattern = FillPattern.SolidForeground;
-
-                XSSFConditionalFormattingRule cfGapNegative =
-                    (XSSFConditionalFormattingRule)condFormating.CreateConditionalFormattingRule(ComparisonOperator.LessThanOrEqual, "-4");
-                XSSFPatternFormatting fill_gap2 = (XSSFPatternFormatting)cfGapNegative.CreatePatternFormatting();
-                fill_gap2.FillBackgroundColor = colorGap;
-                fill_gap2.FillPattern = FillPattern.SolidForeground;
-                CellRangeAddress[] cfRangeGap = { CellRangeAddress.ValueOf($"N2:N{rowCount}") };
-                condFormating.AddConditionalFormatting(cfRangeGap, cfGapPositive, cfGapNegative);
 
                 List<String> columns = new List<string>();
                 IRow row = excelSheet.CreateRow(0);
@@ -125,7 +82,8 @@ namespace Zerodha.Excel
                         }
                         else
                         {
-                            row.CreateCell(cellIndex).SetCellValue(Convert.ToString(dsrow[col]));
+                            var rowVal = !string.IsNullOrEmpty(dsrow[col].ToString()) ? Convert.ToDouble(dsrow[col]) : 0;
+                            row.CreateCell(cellIndex).SetCellValue(rowVal);
                         }
 
                         cellIndex++;
