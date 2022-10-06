@@ -22,7 +22,7 @@ namespace Zerodha.Excel
         private static string lowToHightThreshold = "10";
         private static string lowToHightThresholdCent = "2";
 
-        public static void ExportToExcel(string key)
+        public static void ExportToExcel()
         {
             string json = ReadJson();
             List<Candles> candleList = FormatJsonToObject(json);
@@ -37,7 +37,7 @@ namespace Zerodha.Excel
             return File.ReadAllText(Constant.PATH.ExcelPath);
         }
 
-        static void CreateExcel(DataTable table)
+        public static void CreateExcel(DataTable table)
         {
             using (var fs = new FileStream("Result.xlsx", FileMode.Create, FileAccess.Write))
             {

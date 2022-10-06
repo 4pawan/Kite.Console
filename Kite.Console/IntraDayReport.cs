@@ -13,15 +13,24 @@ namespace Kite.Console
 {
     public class IntraDayReport
     {
-
         public static void GenerateReport()
         {
-            DataTable result = ReadExcelResultFile();
-
+            DataTable result = ReadResultFromExcelFile();
+            var _5minReport = Read5minReport();
+            DataTable updated = AddIntraDayReportToTable(_5minReport, result);
+            Excelhelper.CreateExcel(updated);
+        }
+        public static DataTable AddIntraDayReportToTable(List<Candles> reports, DataTable dt)
+        {
+            return dt;
         }
 
+        public static List<Candles> Read5minReport()
+        {
+            return null;
+        }
 
-        static DataTable ReadExcelResultFile()
+        static DataTable ReadResultFromExcelFile()
         {
             IWorkbook workbook;
             using (var stream = new FileStream("Result.xlsx", FileMode.Open, FileAccess.Read))
