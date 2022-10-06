@@ -23,27 +23,20 @@ namespace Kite.Console
         }
         public static DataTable AddIntraDayReportToTable(List<Candles> reports, DataTable dt)
         {
-            List<String> columns = new List<string>();
-            int columnIndex = 0;
-            foreach (System.Data.DataColumn column in dt.Columns)
-            {
-                if (column.ColumnName == "IsLowerTailLarger")
-                    continue;
 
-                columns.Add(column.ColumnName);
-                columnIndex++;
-            }
-
-            int rowIndex = 1;
             foreach (DataRow dsrow in dt.Rows)
             {
-                int cellIndex = 0;
-                foreach (string col in columns)
-                {
-                    var d = dsrow[col];
-                    cellIndex++;
-                }
-                rowIndex++;
+                DateTime date = DateTime.ParseExact(dsrow[0].ToString(), Constant.DateFormat, null);
+                var dayEntries = reports.Where(r => r.Date.Date == date);
+
+                var max = dayEntries.First(r => r.High == dayEntries.Max(r => r.High));
+                var min = dayEntries.First(r => r.Low == dayEntries.Min(r => r.Low));                            
+               
+                //var _10AM = dayEntries.Where(r => r.Date.ToLocalTime() == "10");
+                
+                dsrow[17] = max.Date.ToShortTimeString();   // DayhighReachedAt
+                dsrow[18] = min.Date.ToShortTimeString();   // DaylowReachedAt
+
             }
             return dt;
         }
@@ -63,21 +56,12 @@ namespace Kite.Console
                 double High = Convert.ToDouble(c[2]);
                 double Low = Convert.ToDouble(c[3]);
                 double Close = Convert.ToDouble(c[4]);
-                double DayLowToHigh = High - Low;
-                double PrevDayClose = candleList.Any() ? candleList.Last().Close : 0;
                 candle.DateFormated = _date.ToString(Constant.DateFormat);
                 candle.Open = Open;
                 candle.High = High;
                 candle.Low = Low;
                 candle.Close = Close;
                 candle.Volume = long.Parse(c[5].ToString());
-                candle.DayLowToHigh = DayLowToHigh;
-                candle.PrevDayClose = PrevDayClose;
-                candle.Gap = Open - PrevDayClose;
-                candle.CentHighFrmY = ((High - PrevDayClose) / PrevDayClose) * 100;
-                candle.CentLowFrmY = ((PrevDayClose - Low) / PrevDayClose) * 100;
-                candle.CentCloseFrmY = ((Close - Open) / Open) * 100;
-                candle.DayCentLowToHigh = (DayLowToHigh / Low) * 100;
                 candleList.Add(candle);
             }
             return candleList;
