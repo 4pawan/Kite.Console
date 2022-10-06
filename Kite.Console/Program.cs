@@ -25,7 +25,7 @@ namespace Zerodha.Excel
             switch (input.Key.ToString())
             {
                 case "D1":
-                    Excelhelper.ExportToExcel(input.Key.ToString());
+                    Excelhelper.ExportToExcel();
                     break;
 
                 case "D2":

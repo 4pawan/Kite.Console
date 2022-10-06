@@ -39,10 +39,7 @@ namespace Kite.Console
                 int cellIndex = 0;
                 foreach (string col in columns)
                 {
-                    if (cellIndex == 0)
-                    {
-
-                    }
+                    var d = dsrow[col];
                     cellIndex++;
                 }
                 rowIndex++;

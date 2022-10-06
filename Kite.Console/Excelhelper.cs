@@ -82,7 +82,7 @@ namespace Zerodha.Excel
                         }
                         else
                         {
-                            var rowVal = !string.IsNullOrEmpty(dsrow[col].ToString()) ? Convert.ToDouble(dsrow[col]) : 0;
+                            double.TryParse(Convert.ToString(dsrow[col]), NumberStyles.Number, CultureInfo.InvariantCulture, out double rowVal);
                             row.CreateCell(cellIndex).SetCellValue(rowVal);
                         }
 
