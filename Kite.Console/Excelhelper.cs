@@ -16,12 +16,7 @@ using NPOI.XSSF.UserModel;
 namespace Zerodha.Excel
 {
     public class Excelhelper
-    {
-        private static string dateFormat = "dd-MM-yyyy:hh:mm";
-        private static string VolThreshold = "3000000";
-        private static string lowToHightThreshold = "10";
-        private static string lowToHightThresholdCent = "2";
-
+    {       
         public static void ExportToExcel()
         {
             string json = ReadJson();
@@ -68,7 +63,7 @@ namespace Zerodha.Excel
                     {
                         if (cellIndex == 0)
                         {
-                            DateTime date = DateTime.ParseExact(dsrow[col].ToString(), dateFormat, CultureInfo.InvariantCulture);
+                            DateTime date = DateTime.ParseExact(dsrow[col].ToString(), Constant.DateFormat, CultureInfo.InvariantCulture);
                             var cell = row.CreateCell(cellIndex);
                             if (IsMonday(date))
                             {
@@ -113,7 +108,7 @@ namespace Zerodha.Excel
                 double Close = Convert.ToDouble(c[4]);
                 double DayLowToHigh = High - Low;
                 double PrevDayClose = candleList.Any() ? candleList.Last().Close : 0;
-                candle.DateFormated = _date.ToString(dateFormat);
+                candle.DateFormated = _date.ToString(Constant.DateFormat);
                 candle.Open = Open;
                 candle.High = High;
                 candle.Low = Low;

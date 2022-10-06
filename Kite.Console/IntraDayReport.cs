@@ -1,4 +1,5 @@
-﻿using NPOI.HSSF.UserModel;
+﻿using Newtonsoft.Json;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
@@ -49,7 +50,37 @@ namespace Kite.Console
 
         public static List<Candles> Read5minReport()
         {
-            return null;
+            string json = File.ReadAllText(Constant.PATH._5minChartPath);
+            var data = JsonConvert.DeserializeObject<Response>(json);
+            List<Candles> candleList = new List<Candles>();
+
+            foreach (List<object> c in data.data.candles)
+            {
+                var candle = new Candles();
+                var _date = DateTime.Parse(Convert.ToString(c[0]));
+                candle.Date = _date;
+                double Open = Convert.ToDouble(c[1]);
+                double High = Convert.ToDouble(c[2]);
+                double Low = Convert.ToDouble(c[3]);
+                double Close = Convert.ToDouble(c[4]);
+                double DayLowToHigh = High - Low;
+                double PrevDayClose = candleList.Any() ? candleList.Last().Close : 0;
+                candle.DateFormated = _date.ToString(Constant.DateFormat);
+                candle.Open = Open;
+                candle.High = High;
+                candle.Low = Low;
+                candle.Close = Close;
+                candle.Volume = long.Parse(c[5].ToString());
+                candle.DayLowToHigh = DayLowToHigh;
+                candle.PrevDayClose = PrevDayClose;
+                candle.Gap = Open - PrevDayClose;
+                candle.CentHighFrmY = ((High - PrevDayClose) / PrevDayClose) * 100;
+                candle.CentLowFrmY = ((PrevDayClose - Low) / PrevDayClose) * 100;
+                candle.CentCloseFrmY = ((Close - Open) / Open) * 100;
+                candle.DayCentLowToHigh = (DayLowToHigh / Low) * 100;
+                candleList.Add(candle);
+            }
+            return candleList;
         }
 
         static DataTable ReadResultFromExcelFile()
