@@ -54,11 +54,21 @@ namespace Kite.Console
                     if (_2PM != null)
                         dsrow[19] = _2PM.Close;
 
-
+                    UpdateExpirayDateForWeek(dayEntries, dsrow);
 
                 }
             }
             return dt;
+        }
+
+        private static void UpdateExpirayDateForWeek(IEnumerable<Candles> dayEntries, DataRow dsrow)
+        {
+            var lastweekDay = dayEntries.FirstOrDefault(d => d.Date.DayOfWeek == DayOfWeek.Thursday);
+
+            if (lastweekDay != null)
+            {
+                dsrow[22] = 1 ;
+            }
         }
 
         public static List<Candles> Read5minReport()
