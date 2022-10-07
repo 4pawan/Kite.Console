@@ -16,7 +16,7 @@ using NPOI.XSSF.UserModel;
 namespace Zerodha.Excel
 {
     public class Excelhelper
-    {       
+    {
         public static void ExportToExcel()
         {
             string json = ReadJson();
@@ -75,12 +75,15 @@ namespace Zerodha.Excel
                             }
                             cell.SetCellValue(dsrow[col].ToString());
                         }
+                        else if (cellIndex == 20 || cellIndex == 21)
+                        {
+                            row.CreateCell(cellIndex).SetCellValue(dsrow[col].ToString());
+                        }
                         else
                         {
                             double.TryParse(Convert.ToString(dsrow[col]), NumberStyles.Number, CultureInfo.InvariantCulture, out double rowVal);
                             row.CreateCell(cellIndex).SetCellValue(rowVal);
                         }
-
                         cellIndex++;
                     }
 
@@ -117,8 +120,11 @@ namespace Zerodha.Excel
                 candle.DayLowToHigh = DayLowToHigh;
                 candle.PrevDayClose = PrevDayClose;
                 candle.Gap = Open - PrevDayClose;
+                candle.HighFrmY = High - PrevDayClose;
+                candle.LowFrmY = Low - PrevDayClose;
+                candle.CloseFrmY = Close - Open;
                 candle.CentHighFrmY = ((High - PrevDayClose) / PrevDayClose) * 100;
-                candle.CentLowFrmY = ((PrevDayClose - Low) / PrevDayClose) * 100;
+                candle.CentLowFrmY = ((Low - PrevDayClose) / PrevDayClose) * 100;
                 candle.CentCloseFrmY = ((Close - Open) / Open) * 100;
                 candle.DayCentLowToHigh = (DayLowToHigh / Low) * 100;
                 candleList.Add(candle);

@@ -29,14 +29,34 @@ namespace Kite.Console
                 DateTime date = DateTime.ParseExact(dsrow[0].ToString(), Constant.DateFormat, null);
                 var dayEntries = reports.Where(r => r.Date.Date == date);
 
-                var max = dayEntries.First(r => r.High == dayEntries.Max(r => r.High));
-                var min = dayEntries.First(r => r.Low == dayEntries.Min(r => r.Low));                            
-               
-                //var _10AM = dayEntries.Where(r => r.Date.ToLocalTime() == "10");
-                
-                dsrow[17] = max.Date.ToShortTimeString();   // DayhighReachedAt
-                dsrow[18] = min.Date.ToShortTimeString();   // DaylowReachedAt
+                if (!dayEntries.Any())
+                    continue;
 
+                if (dsrow[20].ToString() == "0" || string.IsNullOrEmpty(dsrow[20].ToString()))
+                {
+                    var max = dayEntries.First(r => r.High == dayEntries.Max(r => r.High));
+                    var min = dayEntries.First(r => r.Low == dayEntries.Min(r => r.Low));
+
+                    var _10AM = dayEntries.FirstOrDefault(r => r.Date.ToShortTimeString() == "10:00 AM");
+                    var _10_30AM = dayEntries.FirstOrDefault(r => r.Date.ToShortTimeString() == "10:30 AM");
+                    var _1PM = dayEntries.FirstOrDefault(r => r.Date.ToShortTimeString() == "01:00 PM");
+                    var _2PM = dayEntries.FirstOrDefault(r => r.Date.ToShortTimeString() == "02:00 PM");
+
+                    dsrow[20] = max.Date.ToShortTimeString();   // DayhighReachedAt
+                    dsrow[21] = min.Date.ToShortTimeString();   // DaylowReachedAt
+
+                    if (_10AM != null)
+                        dsrow[16] = _10AM.Close;
+                    if (_10_30AM != null)
+                        dsrow[17] = _10_30AM.Close;
+                    if (_1PM != null)
+                        dsrow[18] = _1PM.Close;
+                    if (_2PM != null)
+                        dsrow[19] = _2PM.Close;
+
+
+
+                }
             }
             return dt;
         }

@@ -19,6 +19,9 @@ namespace Zerodha.Excel
         public double PrevDayClose { get; set; }
         public long Volume { get; set; }
         public double DayLowToHigh { get; set; }
+        public double HighFrmY { get; set; } // high - PrevDayClose
+        public double LowFrmY { get; set; } // high - PrevDayClose
+        public double CloseFrmY { get; set; } // high - PrevDayClose
         public double CentHighFrmY { get; set; } // high - PrevDayClose
         public double CentLowFrmY { get; set; }  // PrevDayClose- low
         public double CentCloseFrmY { get; set; }  // close -PrevDayClose OneDayChange
