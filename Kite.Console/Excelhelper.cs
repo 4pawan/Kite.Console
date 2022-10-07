@@ -73,6 +73,15 @@ namespace Zerodha.Excel
                                 backGroundColorStyle.FillPattern = FillPattern.SolidForeground;
                                 cell.CellStyle = backGroundColorStyle;
                             }
+                            if (dsrow[22].ToString() == "1")
+                            {
+                                ICellStyle backGroundColorStyle = workbook.CreateCellStyle();
+                                short colorBlue = HSSFColor.LightGreen.Index;
+                                backGroundColorStyle.FillForegroundColor = colorBlue;
+                                backGroundColorStyle.FillPattern = FillPattern.SolidForeground;
+                                cell.CellStyle = backGroundColorStyle;
+                            }
+
                             cell.SetCellValue(dsrow[col].ToString());
                         }
                         else if (cellIndex == 20 || cellIndex == 21)
