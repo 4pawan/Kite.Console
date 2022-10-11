@@ -17,7 +17,7 @@ namespace Kite.Console
 
         public static string DateFormat = "dd-MM-yyyy:hh:mm";
 
-        public static bool ShowInDiffFromY = Convert.ToBoolean(ConfigurationManager.AppSettings["showInDiffFromY"]);
+        public static bool ShowInDiffFromY = true; //Convert.ToBoolean(ConfigurationManager.AppSettings["showInDiffFromY"]) ;
 
     }
 }
