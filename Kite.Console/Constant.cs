@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,5 +16,8 @@ namespace Kite.Console
         }
 
         public static string DateFormat = "dd-MM-yyyy:hh:mm";
+
+        public static bool ShowInDiffFromY = Convert.ToBoolean(ConfigurationManager.AppSettings["showInDiffFromY"]);
+
     }
 }

@@ -31,6 +31,7 @@ namespace Zerodha.Excel
         public string _10_30AM { get; set; }
         public string _1PM { get; set; }
         public string _2PM { get; set; }
+        public string _2_25PM { get; set; }
         public string DayMaxHighReachedAt { get; set; }
         public string DayMaxLowReachedAt { get; set; }
         public string IstWeeklyDay { get; set; }

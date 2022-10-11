@@ -32,7 +32,7 @@ namespace Kite.Console
                 if (!dayEntries.Any())
                     continue;
 
-                if (dsrow[20].ToString() == "0" || string.IsNullOrEmpty(dsrow[20].ToString()))
+                if (dsrow[21].ToString() == "0" || string.IsNullOrEmpty(dsrow[21].ToString()))
                 {
                     var max = dayEntries.First(r => r.High == dayEntries.Max(r => r.High));
                     var min = dayEntries.First(r => r.Low == dayEntries.Min(r => r.Low));
@@ -41,9 +41,7 @@ namespace Kite.Console
                     var _10_30AM = dayEntries.FirstOrDefault(r => r.Date.ToShortTimeString() == "10:30 AM");
                     var _1PM = dayEntries.FirstOrDefault(r => r.Date.ToShortTimeString() == "01:00 PM");
                     var _2PM = dayEntries.FirstOrDefault(r => r.Date.ToShortTimeString() == "02:00 PM");
-
-                    dsrow[20] = max.Date.ToShortTimeString();   // DayhighReachedAt
-                    dsrow[21] = min.Date.ToShortTimeString();   // DaylowReachedAt
+                    var _2_25PM = dayEntries.FirstOrDefault(r => r.Date.ToShortTimeString() == "02:25 PM");
 
                     if (_10AM != null)
                         dsrow[16] = _10AM.Close;
@@ -53,6 +51,11 @@ namespace Kite.Console
                         dsrow[18] = _1PM.Close;
                     if (_2PM != null)
                         dsrow[19] = _2PM.Close;
+                    if (_2_25PM != null)
+                        dsrow[20] = _2_25PM.Close;
+
+                    dsrow[21] = max.Date.ToShortTimeString();   // DayhighReachedAt
+                    dsrow[22] = min.Date.ToShortTimeString();   // DaylowReachedAt
 
                     UpdateExpirayDateForWeek(dayEntries, dsrow);
 
@@ -67,7 +70,7 @@ namespace Kite.Console
 
             if (lastweekDay != null)
             {
-                dsrow[22] = 1 ;
+                dsrow[23] = 1;
             }
         }
 
