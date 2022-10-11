@@ -42,17 +42,18 @@ namespace Kite.Console
                     var _1PM = dayEntries.FirstOrDefault(r => r.Date.ToShortTimeString() == "01:00 PM");
                     var _2PM = dayEntries.FirstOrDefault(r => r.Date.ToShortTimeString() == "02:00 PM");
                     var _2_25PM = dayEntries.FirstOrDefault(r => r.Date.ToShortTimeString() == "02:25 PM");
+                    double preDayClose = Constant.ShowInDiffFromY ? Convert.ToDouble(dsrow[5]) : 0;
 
                     if (_10AM != null)
-                        dsrow[16] = _10AM.Close;
+                        dsrow[16] = _10AM.Close - preDayClose;
                     if (_10_30AM != null)
-                        dsrow[17] = _10_30AM.Close;
+                        dsrow[17] = _10_30AM.Close - preDayClose;
                     if (_1PM != null)
-                        dsrow[18] = _1PM.Close;
+                        dsrow[18] = _1PM.Close - preDayClose;
                     if (_2PM != null)
-                        dsrow[19] = _2PM.Close;
+                        dsrow[19] = _2PM.Close - preDayClose;
                     if (_2_25PM != null)
-                        dsrow[20] = _2_25PM.Close;
+                        dsrow[20] = _2_25PM.Close - preDayClose;
 
                     dsrow[21] = max.Date.ToShortTimeString();   // DayhighReachedAt
                     dsrow[22] = min.Date.ToShortTimeString();   // DaylowReachedAt
