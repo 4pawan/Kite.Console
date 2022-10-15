@@ -131,10 +131,10 @@ namespace Zerodha.Excel
                 candle.Gap = Open - PrevDayClose;
                 candle.HighFrmY = High - PrevDayClose;
                 candle.LowFrmY = Low - PrevDayClose;
-                candle.CloseFrmY = Close - Open;
+                candle.CloseFrmY = Close - PrevDayClose;
                 candle.CentHighFrmY = ((High - PrevDayClose) / PrevDayClose) * 100;
                 candle.CentLowFrmY = ((Low - PrevDayClose) / PrevDayClose) * 100;
-                candle.CentCloseFrmY = ((Close - Open) / Open) * 100;
+                candle.CentCloseFrmY = ((Close - PrevDayClose) / PrevDayClose) * 100;
                 candle.DayCentLowToHigh = (DayLowToHigh / Low) * 100;
                 candleList.Add(candle);
             }
